@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bmi-example-pynetlogo"
+description = "BMI pyNetLogo example"
+authors = [
+  {name = "Mark Piper"},
+  {email = "mark.piper@colorado.edu"},
+]
+maintainers = [
+  {name = "Mark Piper"},
+  {email = "mark.piper@colorado.edu"},
+  {name = "Eric Hutton"},
+  {email = "eric.hutton@colorado.edu"},
+  {name = "The CSDMS team"},
+  {email = "csdms@colorado.edu"},
+]
+keywords = [
+  "bmi",
+  "netlogo",
+  "pynetlogo",
+  "component modeling",
+  "earth science",
+]
+license = {file = "LICENSE"}
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Education",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+requires-python = ">=3.9"
+dependencies = [
+  "bmipy",
+  "numpy",
+  "scipy",
+  "pandas",
+  "jpype",
+  "pynetlogo",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://csdms.colorado.edu"
+Documentation = "https://github.com/csdms/bmi-example-pynetlogo/blob/main/README.md"
+Repository = "https://github.com/csdms/bmi-example-pynetlogo"
+Changelog = "https://github.com/csdms/bmi-example-pynetlogo/commits/main"
+
+[project.optional-dependencies]
+dev = ["nox"]
+
+[tool.setuptools.dynamic]
+version = {attr = "heat._version.__version__"}
