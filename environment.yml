@@ -1,0 +1,14 @@
+# An environment for building the pyNetLogo BMI example.
+name: logo
+channels:
+  - conda-forge
+dependencies:
+  - python =3
+  - pip
+  - bmipy
+  - numpy
+  - scipy
+  - pandas
+  - jpype1
+  - pip:
+    - pynetlogo
