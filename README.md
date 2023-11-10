@@ -21,7 +21,9 @@ This repository is organized with the following directories:
 
 <dl>
     <dt>heat</dt>
-	<dd>Holds the model and a BMI for the model</dd>
+        <dd>Holds the model and a BMI for the model</dd>
+    <dt>examples</dt>
+        <dd>Jupyter Notebooks that demonstrate how to run the model standalone and through its BMI</dd>
 </dl>
 
 ## Build/Install
