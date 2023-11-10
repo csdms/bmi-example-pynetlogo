@@ -10,5 +10,7 @@ dependencies:
   - scipy
   - pandas
   - jpype1
+  - matplotlib
+  - jupyter
   - pip:
     - pynetlogo

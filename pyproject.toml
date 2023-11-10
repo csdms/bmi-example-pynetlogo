@@ -57,6 +57,10 @@ Changelog = "https://github.com/csdms/bmi-example-pynetlogo/commits/main"
 
 [project.optional-dependencies]
 dev = ["nox"]
+examples = [
+  "jupyter",
+  "matplotlib",
+]
 
 [tool.setuptools.dynamic]
 version = {attr = "heat._version.__version__"}
