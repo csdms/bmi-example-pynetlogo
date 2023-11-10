@@ -12,5 +12,8 @@ dependencies:
   - jpype1
   - matplotlib
   - jupyter
+  - pytest
+  - pytest-cov
+  - coverage
   - pip:
     - pynetlogo

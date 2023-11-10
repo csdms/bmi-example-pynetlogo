@@ -53,13 +53,17 @@ dynamic = ["version"]
 Homepage = "https://csdms.colorado.edu"
 Documentation = "https://github.com/csdms/bmi-example-pynetlogo/blob/main/README.md"
 Repository = "https://github.com/csdms/bmi-example-pynetlogo"
-Changelog = "https://github.com/csdms/bmi-example-pynetlogo/commits/main"
 
 [project.optional-dependencies]
 dev = ["nox"]
 examples = [
   "jupyter",
   "matplotlib",
+]
+testing = [
+  "pytest",
+  "pytest-cov",
+  "coverage",
 ]
 
 [tool.setuptools.dynamic]
