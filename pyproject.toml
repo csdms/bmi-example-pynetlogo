@@ -44,7 +44,7 @@ dependencies = [
   "numpy",
   "scipy",
   "pandas",
-  "jpype",
+  "jpype1",
   "pynetlogo",
 ]
 dynamic = ["version"]
