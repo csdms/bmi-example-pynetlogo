@@ -1,8 +1,19 @@
 # -*- coding: utf-8 -*-
+from collections import namedtuple
 from typing import Tuple
 
 from bmipy import Bmi
 import numpy
+
+BmiVar = namedtuple(
+    "BmiVar", ["dtype", "itemsize", "nbytes", "units", "location", "grid"]
+)
+BmiGridUniformRectilinear = namedtuple(
+    "BmiGridUniformRectilinear", ["shape", "yx_spacing", "yx_of_lower_left"]
+)
+BmiTime = namedtuple(
+    "BmiTime", ["current", "start", "end", "units", "step"]
+)
 
 
 class BmiHeatDiffusion(Bmi):
@@ -10,20 +21,21 @@ class BmiHeatDiffusion(Bmi):
     """Solve the heat equation on a 2D plate."""
 
     _name = "The 2D Heat Equation"
-    _input_var_names = ("plate_surface__temperature",)
+    _input_var_names = ()
     _output_var_names = ("plate_surface__temperature",)
 
     def __init__(self):
+        self._config = {}
         self._model = None
-        self._values = {}
-        self._var_units = {}
-        self._var_loc = {}
-        self._grids = {}
-        self._grid_type = {}
-
-        self._start_time = 0.0
-        self._end_time = numpy.finfo("d").max
-        self._time_units = "s"
+        self._var = None
+        self._grid = {}
+        self._time = BmiTime(
+            current=0.0,
+            start=0.0,
+            end=numpy.finfo("d").max,
+            units="s",
+            step=0.1,
+        )
 
     def finalize(self) -> None:
         """Perform tear-down tasks for the model.
@@ -38,17 +50,10 @@ class BmiHeatDiffusion(Bmi):
         return self._name
 
     def get_current_time(self) -> float:
-        """Return the current time of the model.
-
-        Returns
-        -------
-        float
-            The current model time.
-        """
-        raise NotImplementedError("get_current_time")
+        return self._time.current
 
     def get_end_time(self) -> float:
-        return self._end_time
+        return self._time.end
 
     def get_grid_edge_count(self, grid: int) -> int:
         """Get the number of edges in the grid.
@@ -337,13 +342,13 @@ class BmiHeatDiffusion(Bmi):
         return self._output_var_names
 
     def get_start_time(self) -> float:
-        return self._start_time
+        return self._time.start
 
     def get_time_step(self) -> float:
-        return 0.1
+        return self._time.step
 
     def get_time_units(self) -> str:
-        return self._time_units
+        return self._time.units
 
     def get_value(self, name: str, dest: numpy.ndarray) -> numpy.ndarray:
         """Get a copy of values of the given variable.
