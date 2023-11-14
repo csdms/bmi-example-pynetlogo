@@ -1,0 +1,5 @@
+# model configuration
+HeatDiffusion:
+  netlogo_home: "/opt/netlogo-6.1.1"
+  model_name: "HeatDiffusion.nlogo"
+  bmi_version: "2.0"

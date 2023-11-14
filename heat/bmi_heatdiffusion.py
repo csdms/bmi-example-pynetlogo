@@ -3,16 +3,19 @@ from collections import namedtuple
 from typing import Tuple
 
 from bmipy import Bmi
+import yaml
 import numpy
+import pynetlogo
+import pathlib
+
+HERE = pathlib.Path(__file__)
+MODULE_PATH = HERE.parent
 
 BmiVar = namedtuple(
     "BmiVar", ["dtype", "itemsize", "nbytes", "units", "location", "grid"]
 )
 BmiGridUniformRectilinear = namedtuple(
     "BmiGridUniformRectilinear", ["shape", "yx_spacing", "yx_of_lower_left"]
-)
-BmiTime = namedtuple(
-    "BmiTime", ["current", "start", "end", "units", "step"]
 )
 
 
@@ -29,31 +32,25 @@ class BmiHeatDiffusion(Bmi):
         self._model = None
         self._var = None
         self._grid = {}
-        self._time = BmiTime(
-            current=0.0,
-            start=0.0,
-            end=numpy.finfo("d").max,
-            units="s",
-            step=0.1,
-        )
+        self._time = {
+            "current": 0.0,
+            "start": 0.0,
+            "end": numpy.finfo("d").max,
+            "units": "s",
+            "step": 0.1,
+        }
 
     def finalize(self) -> None:
-        """Perform tear-down tasks for the model.
-
-        Perform all tasks that take place after exiting the model's time
-        loop. This typically includes deallocating memory, closing files and
-        printing reports.
-        """
-        raise NotImplementedError("finalize")
+        self._model.kill_workspace()
 
     def get_component_name(self) -> str:
         return self._name
 
     def get_current_time(self) -> float:
-        return self._time.current
+        return self._time["current"]
 
     def get_end_time(self) -> float:
-        return self._time.end
+        return self._time["end"]
 
     def get_grid_edge_count(self, grid: int) -> int:
         """Get the number of edges in the grid.
@@ -342,13 +339,13 @@ class BmiHeatDiffusion(Bmi):
         return self._output_var_names
 
     def get_start_time(self) -> float:
-        return self._time.start
+        return self._time["start"]
 
     def get_time_step(self) -> float:
-        return self._time.step
+        return self._time["step"]
 
     def get_time_units(self) -> str:
-        return self._time.units
+        return self._time["units"]
 
     def get_value(self, name: str, dest: numpy.ndarray) -> numpy.ndarray:
         """Get a copy of values of the given variable.
@@ -537,27 +534,18 @@ class BmiHeatDiffusion(Bmi):
         raise NotImplementedError("get_var_units")
 
     def initialize(self, config_file: str) -> None:
-        """Perform startup tasks for the model.
+        try:
+            with open(config_file, "r") as fp:
+                self._config = yaml.safe_load(fp).get("HeatDiffusion", {})
+        except FileNotFoundError:
+            raise
 
-        Perform all tasks that take place before entering the model's time
-        loop, including opening files and initializing the model state. Model
-        inputs are read from a text-based configuration file, specified by
-        `config_file`.
-
-        Parameters
-        ----------
-        config_file : str, optional
-            The path to the model configuration file.
-
-        Notes
-        -----
-        Models should be refactored, if necessary, to use a
-        configuration file. CSDMS does not impose any constraint on
-        how configuration files are formatted, although YAML is
-        recommended. A template of a model's configuration file
-        with placeholder values is used by the BMI.
-        """
-        raise NotImplementedError("initialize")
+        self._model = pynetlogo.NetLogoLink(
+            netlogo_home=self._config["netlogo_home"],
+            gui=False
+        )
+        self._model.load_model(str(MODULE_PATH / self._config["model_name"]))
+        self._model.command("setup")
 
     def set_value(self, name: str, src: numpy.ndarray) -> None:
         """Specify a new value for a model variable.
@@ -593,23 +581,9 @@ class BmiHeatDiffusion(Bmi):
         raise NotImplementedError("set_value_at_indices")
 
     def update(self) -> None:
-        """Advance model state by one time step.
-
-        Perform all tasks that take place within one pass through the model's
-        time loop. This typically includes incrementing all of the model's
-        state variables. If the model's state variables don't change in time,
-        then they can be computed by the :func:`initialize` method and this
-        method can return with no action.
-        """
-        raise NotImplementedError("update")
+        self._model.command("repeat 1 [go]")
+        self._time["current"] = self._model.report("ticks") * self._time["step"]
 
     def update_until(self, time: float) -> None:
-        """Advance model state until the given time.
-
-        Parameters
-        ----------
-        time : float
-            A model time later than the current model time.
-        """
         raise NotImplementedError("update_until")
 
