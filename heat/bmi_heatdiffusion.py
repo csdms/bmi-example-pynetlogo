@@ -409,129 +409,22 @@ class BmiHeatDiffusion(Bmi):
         raise NotImplementedError("get_value_ptr")
 
     def get_var_grid(self, name: str) -> int:
-        """Get grid identifier for the given variable.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-
-        Returns
-        -------
-        int
-          The grid identifier.
-        """
-        raise NotImplementedError("get_var_grid")
+        return self._var.grid
 
     def get_var_itemsize(self, name: str) -> int:
-        """Get memory use for each array element in bytes.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-
-        Returns
-        -------
-        int
-            Item size in bytes.
-        """
-        raise NotImplementedError("get_var_itemsize")
+        return self._var.itemsize
 
     def get_var_location(self, name: str) -> str:
-        """Get the grid element type that the a given variable is defined on.
-
-        The grid topology can be composed of *nodes*, *edges*, and *faces*.
-
-        *node*
-            A point that has a coordinate pair or triplet: the most
-            basic element of the topology.
-
-        *edge*
-            A line or curve bounded by two *nodes*.
-
-        *face*
-            A plane or surface enclosed by a set of edges. In a 2D
-            horizontal application one may consider the word “polygon”,
-            but in the hierarchy of elements the word “face” is most common.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-
-        Returns
-        -------
-        str
-            The grid location on which the variable is defined. Must be one of
-            `"node"`, `"edge"`, or `"face"`.
-
-        Notes
-        -----
-        CSDMS uses the `ugrid conventions`_ to define unstructured grids.
-
-        .. _ugrid conventions: http://ugrid-conventions.github.io/ugrid-conventions
-        """
-        raise NotImplementedError("get_var_location")
+        return self._var.location
 
     def get_var_nbytes(self, name: str) -> int:
-        """Get size, in bytes, of the given variable.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-
-        Returns
-        -------
-        int
-            The size of the variable, counted in bytes.
-        """
-        raise NotImplementedError("get_var_nbytes")
+        return self._var.nbytes
 
     def get_var_type(self, name: str) -> str:
-        """Get data type of the given variable.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-
-        Returns
-        -------
-        str
-            The Python variable type; e.g., ``str``, ``int``, ``float``.
-        """
-        raise NotImplementedError("get_var_type")
+        return self._var.dtype
 
     def get_var_units(self, name: str) -> str:
-        """Get units of the given variable.
-
-        Standard unit names, in lower case, should be used, such as
-        ``meters`` or ``seconds``. Standard abbreviations, like ``m`` for
-        meters, are also supported. For variables with compound units,
-        each unit name is separated by a single space, with exponents
-        other than 1 placed immediately after the name, as in ``m s-1``
-        for velocity, ``W m-2`` for an energy flux, or ``km2`` for an
-        area.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-
-        Returns
-        -------
-        str
-            The variable units.
-
-        Notes
-        -----
-        CSDMS uses the `UDUNITS`_ standard from Unidata.
-
-        .. _UDUNITS: http://www.unidata.ucar.edu/software/udunits
-        """
-        raise NotImplementedError("get_var_units")
+        return self._var.units
 
     def initialize(self, config_file: str) -> None:
         try:
@@ -546,6 +439,15 @@ class BmiHeatDiffusion(Bmi):
         )
         self._model.load_model(str(MODULE_PATH / self._config["model_name"]))
         self._model.command("setup")
+
+        self._var = BmiVar(
+            dtype=str(self._model.patch_report("temperature").values.dtype),
+            itemsize=self._model.patch_report("temperature").values.itemsize,
+            nbytes=self._model.patch_report("temperature").values.nbytes,
+            location="face",
+            units="C",
+            grid=0,
+        )
 
     def set_value(self, name: str, src: numpy.ndarray) -> None:
         """Specify a new value for a model variable.
@@ -586,4 +488,3 @@ class BmiHeatDiffusion(Bmi):
 
     def update_until(self, time: float) -> None:
         raise NotImplementedError("update_until")
-
