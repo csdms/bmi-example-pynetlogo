@@ -53,277 +53,62 @@ class BmiHeatDiffusion(Bmi):
         return self._time["end"]
 
     def get_grid_edge_count(self, grid: int) -> int:
-        """Get the number of edges in the grid.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-
-        Returns
-        -------
-        int
-            The total number of grid edges.
-        """
         raise NotImplementedError("get_grid_edge_count")
 
     def get_grid_edge_nodes(
         self, grid: int, edge_nodes: numpy.ndarray
     ) -> numpy.ndarray:
-        """Get the edge-node connectivity.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-        edge_nodes : ndarray of int, shape *(2 x nnodes,)*
-            A numpy array to place the edge-node connectivity. For each edge,
-            connectivity is given as node at edge tail, followed by node at
-            edge head.
-
-        Returns
-        -------
-        ndarray of int
-            The input numpy array that holds the edge-node connectivity.
-        """
         raise NotImplementedError("get_grid_edge_nodes")
 
     def get_grid_face_count(self, grid: int) -> int:
-        """Get the number of faces in the grid.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-
-        Returns
-        -------
-        int
-            The total number of grid faces.
-        """
         raise NotImplementedError("get_grid_face_count")
 
     def get_grid_face_edges(
         self, grid: int, face_edges: numpy.ndarray
     ) -> numpy.ndarray:
-        """Get the face-edge connectivity.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-        face_edges : ndarray of int
-            A numpy array to place the face-edge connectivity.
-
-        Returns
-        -------
-        ndarray of int
-            The input numpy array that holds the face-edge connectivity.
-        """
         raise NotImplementedError("get_grid_face_edges")
 
     def get_grid_face_nodes(
         self, grid: int, face_nodes: numpy.ndarray
     ) -> numpy.ndarray:
-        """Get the face-node connectivity.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-        face_nodes : ndarray of int
-            A numpy array to place the face-node connectivity. For each face,
-            the nodes (listed in a counter-clockwise direction) that form the
-            boundary of the face.
-
-        Returns
-        -------
-        ndarray of int
-            The input numpy array that holds the face-node connectivity.
-        """
         raise NotImplementedError("get_grid_face_nodes")
 
     def get_grid_node_count(self, grid: int) -> int:
-        """Get the number of nodes in the grid.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-
-        Returns
-        -------
-        int
-            The total number of grid nodes.
-        """
-        raise NotImplementedError("get_grid_node_count")
+        return self.get_grid_size(grid)
 
     def get_grid_nodes_per_face(
         self, grid: int, nodes_per_face: numpy.ndarray
     ) -> numpy.ndarray:
-        """Get the number of nodes for each face.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-        nodes_per_face : ndarray of int, shape *(nfaces,)*
-            A numpy array to place the number of nodes per face.
-
-        Returns
-        -------
-        ndarray of int
-            The input numpy array that holds the number of nodes per face.
-        """
         raise NotImplementedError("get_grid_nodes_per_face")
 
     def get_grid_origin(self, grid: int, origin: numpy.ndarray) -> numpy.ndarray:
-        """Get coordinates for the lower-left corner of the computational grid.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-        origin : ndarray of float, shape *(ndim,)*
-            A numpy array to hold the coordinates of the lower-left corner of
-            the grid.
-
-        Returns
-        -------
-        ndarray of float
-            The input numpy array that holds the coordinates of the grid's
-            lower-left corner.
-        """
-        raise NotImplementedError("get_grid_origin")
+        origin[:] = self._grid[grid].yx_of_lower_left
+        return origin
 
     def get_grid_rank(self, grid: int) -> int:
-        """Get number of dimensions of the computational grid.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-
-        Returns
-        -------
-        int
-            Rank of the grid.
-        """
-        raise NotImplementedError("get_grid_rank")
+        return len(self._grid[grid].shape)
 
     def get_grid_shape(self, grid: int, shape: numpy.ndarray) -> numpy.ndarray:
-        """Get dimensions of the computational grid.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-        shape : ndarray of int, shape *(ndim,)*
-            A numpy array into which to place the shape of the grid.
-
-        Returns
-        -------
-        ndarray of int
-            The input numpy array that holds the grid's shape.
-        """
-        raise NotImplementedError("get_grid_shape")
+        shape[:] = self._grid[grid].shape
+        return shape
 
     def get_grid_size(self, grid: int) -> int:
-        """Get the total number of elements in the computational grid.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-
-        Returns
-        -------
-        int
-            Size of the grid.
-        """
-        raise NotImplementedError("get_grid_size")
+        return int(numpy.prod(self._grid[grid].shape))
 
     def get_grid_spacing(self, grid: int, spacing: numpy.ndarray) -> numpy.ndarray:
-        """Get distance between nodes of the computational grid.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-        spacing : ndarray of float, shape *(ndim,)*
-            A numpy array to hold the spacing between grid rows and columns.
-
-        Returns
-        -------
-        ndarray of float
-            The input numpy array that holds the grid's spacing.
-        """
-        raise NotImplementedError("get_grid_spacing")
+        spacing[:] = self._grid[grid].yx_spacing
+        return spacing
 
     def get_grid_type(self, grid: int) -> str:
-        """Get the grid type as a string.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-
-        Returns
-        -------
-        str
-            Type of grid as a string.
-        """
-        raise NotImplementedError("get_grid_type")
+        return "uniform_rectilinear"
 
     def get_grid_x(self, grid: int, x: numpy.ndarray) -> numpy.ndarray:
-        """Get coordinates of grid nodes in the x direction.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-        x : ndarray of float, shape *(nrows,)*
-            A numpy array to hold the x-coordinates of the grid node columns.
-
-        Returns
-        -------
-        ndarray of float
-            The input numpy array that holds the grid's column x-coordinates.
-        """
         raise NotImplementedError("get_grid_x")
 
     def get_grid_y(self, grid: int, y: numpy.ndarray) -> numpy.ndarray:
-        """Get coordinates of grid nodes in the y direction.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-        y : ndarray of float, shape *(ncols,)*
-            A numpy array to hold the y-coordinates of the grid node rows.
-
-        Returns
-        -------
-        ndarray of float
-            The input numpy array that holds the grid's row y-coordinates.
-        """
         raise NotImplementedError("get_grid_y")
 
     def get_grid_z(self, grid: int, z: numpy.ndarray) -> numpy.ndarray:
-        """Get coordinates of grid nodes in the z direction.
-
-        Parameters
-        ----------
-        grid : int
-            A grid identifier.
-        z : ndarray of float, shape *(nlayers,)*
-            A numpy array to hold the z-coordinates of the grid nodes layers.
-
-        Returns
-        -------
-        ndarray of float
-            The input numpy array that holds the grid's layer z-coordinates.
-        """
         raise NotImplementedError("get_grid_z")
 
     def get_input_item_count(self) -> int:
@@ -448,6 +233,20 @@ class BmiHeatDiffusion(Bmi):
             units="C",
             grid=0,
         )
+
+        self._grid = {
+            0: BmiGridUniformRectilinear(
+                shape=self._model.patch_report("temperature").shape,
+                yx_spacing=(
+                    1.0,
+                    1.0,
+                ),
+                yx_of_lower_left=(
+                    float(self._model.patch_report("temperature").index.min()),
+                    float(self._model.patch_report("temperature").index.min()),
+                ),
+            )
+        }
 
     def set_value(self, name: str, src: numpy.ndarray) -> None:
         """Specify a new value for a model variable.
