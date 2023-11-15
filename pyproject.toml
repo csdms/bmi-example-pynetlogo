@@ -62,6 +62,7 @@ examples = [
 ]
 testing = [
   "pytest",
+  "pytest-datadir",
   "pytest-cov",
   "coverage",
 ]

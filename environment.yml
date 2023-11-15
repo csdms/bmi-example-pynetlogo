@@ -14,6 +14,7 @@ dependencies:
   - jupyter
   - pytest
   - pytest-cov
+  - pytest-datadir
   - coverage
   - pip:
     - pynetlogo
