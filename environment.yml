@@ -5,6 +5,7 @@ channels:
 dependencies:
   - python =3
   - pip
+  - nox
   - bmipy
   - numpy
   - scipy
@@ -16,5 +17,6 @@ dependencies:
   - pytest-cov
   - pytest-datadir
   - coverage
+  - zest.releaser
   - pip:
     - pynetlogo

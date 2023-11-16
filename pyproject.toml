@@ -55,7 +55,10 @@ Documentation = "https://github.com/csdms/bmi-example-pynetlogo/blob/main/README
 Repository = "https://github.com/csdms/bmi-example-pynetlogo"
 
 [project.optional-dependencies]
-dev = ["nox"]
+dev = [
+  "nox",
+  "zest.releaser",
+]
 examples = [
   "jupyter",
   "matplotlib",
