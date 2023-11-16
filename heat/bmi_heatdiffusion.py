@@ -42,6 +42,7 @@ class BmiHeatDiffusion(Bmi):
 
     def finalize(self) -> None:
         self._model.kill_workspace()
+        self._model = None
 
     def get_component_name(self) -> str:
         return self._name
@@ -133,64 +134,15 @@ class BmiHeatDiffusion(Bmi):
         return self._time["units"]
 
     def get_value(self, name: str, dest: numpy.ndarray) -> numpy.ndarray:
-        """Get a copy of values of the given variable.
-
-        This is a getter for the model, used to access the model's
-        current state. It returns a *copy* of a model variable, with
-        the return type, size and rank dependent on the variable.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-        dest : ndarray
-            A numpy array into which to place the values.
-
-        Returns
-        -------
-        ndarray
-            The same numpy array that was passed as an input buffer.
-        """
-        raise NotImplementedError("get_value")
+        dest[:] = self._model.patch_report("temperature").values.base
+        return dest
 
     def get_value_at_indices(
         self, name: str, dest: numpy.ndarray, inds: numpy.ndarray
     ) -> numpy.ndarray:
-        """Get values at particular indices.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-        dest : ndarray
-            A numpy array into which to place the values.
-        inds : array_like
-            The indices into the variable array.
-
-        Returns
-        -------
-        array_like
-            Value of the model variable at the given location.
-        """
         raise NotImplementedError("get_value_at_indices")
 
     def get_value_ptr(self, name: str) -> numpy.ndarray:
-        """Get a reference to values of the given variable.
-
-        This is a getter for the model, used to access the model's
-        current state. It returns a reference to a model variable,
-        with the return type, size and rank dependent on the variable.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-
-        Returns
-        -------
-        array_like
-            A reference to a model variable.
-        """
         raise NotImplementedError("get_value_ptr")
 
     def get_var_grid(self, name: str) -> int:
@@ -249,36 +201,13 @@ class BmiHeatDiffusion(Bmi):
         }
 
     def set_value(self, name: str, src: numpy.ndarray) -> None:
-        """Specify a new value for a model variable.
-
-        This is the setter for the model, used to change the model's
-        current state. It accepts, through *src*, a new value for a
-        model variable, with the type, size and rank of *src*
-        dependent on the variable.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-        src : array_like
-            The new value for the specified variable.
-        """
-        raise NotImplementedError("set_value")
+        val = self._model.patch_report("temperature")
+        val[:] = src.reshape(val.shape)
+        self._model.patch_set("temperature", val)
 
     def set_value_at_indices(
         self, name: str, inds: numpy.ndarray, src: numpy.ndarray
     ) -> None:
-        """Specify a new value for a model variable at particular indices.
-
-        Parameters
-        ----------
-        name : str
-            An input or output variable name, a CSDMS Standard Name.
-        inds : array_like
-            The indices into the variable array.
-        src : array_like
-            The new value for the specified variable.
-        """
         raise NotImplementedError("set_value_at_indices")
 
     def update(self) -> None:
