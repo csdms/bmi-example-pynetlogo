@@ -58,6 +58,9 @@ Repository = "https://github.com/csdms/bmi-example-pynetlogo"
 dev = [
   "nox",
   "zest.releaser",
+  "black",
+  "isort",
+  "ruff",
 ]
 examples = [
   "jupyter",
@@ -72,3 +75,38 @@ testing = [
 
 [tool.setuptools.dynamic]
 version = {attr = "heat._version.__version__"}
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["heat", "tests"]
+norecursedirs = [".*", "*.egg*", "build", "dist"]
+addopts = """
+  --tb native
+  --strict
+  --durations 16
+  --doctest-modules
+  -vvv
+"""
+doctest_optionflags = [
+  "NORMALIZE_WHITESPACE",
+  "IGNORE_EXCEPTION_DETAIL",
+  "ALLOW_UNICODE"
+]
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+combine_as_imports = true
+line_length = 88
+
+[tool.ruff]
+line-length = 88
+ignore = [
+	"E203",
+	"E501",
+]
+
+[tool.zest-releaser]
+tag-format = "v{version}"
+python-file-with-version = "heat/_version.py"

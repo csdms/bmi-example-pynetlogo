@@ -18,5 +18,8 @@ dependencies:
   - pytest-datadir
   - coverage
   - zest.releaser
+  - black
+  - ruff
+  - isort
   - pip:
     - pynetlogo
