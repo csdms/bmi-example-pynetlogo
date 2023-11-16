@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
+import pathlib
 from collections import namedtuple
-from typing import Tuple
 
-from bmipy import Bmi
-import yaml
 import numpy
 import pynetlogo
-import pathlib
+import yaml
+from bmipy import Bmi
 
 HERE = pathlib.Path(__file__)
 MODULE_PATH = HERE.parent
@@ -171,8 +170,7 @@ class BmiHeatDiffusion(Bmi):
             raise
 
         self._model = pynetlogo.NetLogoLink(
-            netlogo_home=self._config["netlogo_home"],
-            gui=False
+            netlogo_home=self._config["netlogo_home"], gui=False
         )
         self._model.load_model(str(MODULE_PATH / self._config["model_name"]))
         self._model.command("setup")

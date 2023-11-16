@@ -1,7 +1,7 @@
 """Test the BMI get_value functions."""
 import numpy as np
 import pytest
-from numpy.testing import assert_array_almost_equal, assert_array_less
+from numpy.testing import assert_array_almost_equal
 
 from heat import BmiHeatDiffusion
 
@@ -29,7 +29,7 @@ def test_get_value(shared_datadir):
 def test_get_value_ptr():
     model = BmiHeatDiffusion()
     with pytest.raises(NotImplementedError):
-        z0 = model.get_value_ptr(VAR_NAME)
+        model.get_value_ptr(VAR_NAME)
 
 
 def test_get_value_at_indices():

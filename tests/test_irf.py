@@ -1,6 +1,5 @@
 """Test BMI model control functions."""
 import numpy as np
-import pytest
 from numpy.testing import assert_almost_equal, assert_array_equal
 
 from heat import BmiHeatDiffusion
