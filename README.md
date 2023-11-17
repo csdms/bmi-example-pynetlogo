@@ -54,6 +54,8 @@ pip install -e .
 
 ## Use
 
+Try the example notebooks and scripts in the [examples](./examples/) directory. 
+
 ## Acknowledgments
 
 The model of temperature diffusion used in this example:
