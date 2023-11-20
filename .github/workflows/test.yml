@@ -34,6 +34,8 @@ jobs:
           miniforge-variant: Miniforge3
           miniforge-version: latest
           auto-update-conda: true
+          activate-environment: logo
+          environment-file: environment.yml
 
       - name: Install package
         run: |
