@@ -25,4 +25,23 @@ jobs:
           curl https://ccl.northwestern.edu/netlogo/6.1.1/NetLogo-6.1.1-64.tgz --output NetLogo-6.1.1-64.tgz
           tar xf NetLogo-6.1.1-64.tgz
           mv NetLogo\ 6.1.1 /opt/netlogo-6.1.1
-          ls -l /opt
+
+      - uses: actions/checkout@v4
+
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          micromamba-version: latest
+          environment-file: environment.yml
+
+      - name: Install package
+        run: |
+          pip install -e .
+
+      - name: Test
+        run: |
+          nox -s test --python ${{ matrix.python-version }}
+  
+      - name: Run examples
+        working-directory: ${{ github.workspace }}/examples
+        run: |
+          python run-bmi-model.py
