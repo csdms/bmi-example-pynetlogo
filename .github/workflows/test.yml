@@ -1,0 +1,28 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    if:
+      github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
+      github.repository
+
+    runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.9"]
+
+    steps:
+      - name: Install NetLogo
+        run: |
+          curl https://ccl.northwestern.edu/netlogo/6.1.1/NetLogo-6.1.1-64.tgz --output NetLogo-6.1.1-64.tgz
+          tar xf NetLogo-6.1.1-64.tgz
+          mv NetLogo\ 6.1.1 /opt/netlogo-6.1.1
+          ls -l /opt
