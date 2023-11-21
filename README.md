@@ -1,4 +1,5 @@
 [![Basic Model Interface](https://img.shields.io/badge/CSDMS-Basic%20Model%20Interface-green.svg)](https://bmi.readthedocs.io/)
+[![Test](https://github.com/csdms/bmi-example-pynetlogo/actions/workflows/test.yml/badge.svg)](https://github.com/csdms/bmi-example-pynetlogo/actions/workflows/test.yml)
 
 # bmi-example-pynetlogo
 
@@ -34,7 +35,7 @@ This example can be built and installed on Linux, macOS, and Windows.
 
 **Prerequisites:**
 
-* NetLogo. Instructions for downloading and installing NetLogo can be found [here](https://ccl.northwestern.edu/netlogo/download.shtml). NetLogo 6.1.1 was used to build and test this example.
+* NetLogo. Instructions for downloading and installing NetLogo can be found [here](https://ccl.northwestern.edu/netlogo/download.shtml). NetLogo 6.1.1 was used to build, test, and run this example.
 * The Python BMI bindings. Follow the [build and install directions](https://github.com/csdms/bmi-python#install) given in that repository. You can choose to install them from source, or through `pip` or `conda`.
 * PyNetLogo and Jpype. These are the key software packages that allow communication between NetLogo and Python.
 
@@ -44,7 +45,7 @@ we've included an environment file.
 ```
 conda env create --file environment.yml
 ```
-This create the *logo* environment,
+This creates the *logo* environment,
 which you can activate to have access to all the dependent packages needed to build and use this example.
 
 Install the example with `pip`.
@@ -58,11 +59,11 @@ Try the example notebooks and scripts in the [examples](./examples/) directory.
 
 ## Acknowledgments
 
-The model of temperature diffusion used in this example:
+The model of temperature diffusion used in this example.
 
 > Wilensky, U. (1998). NetLogo Heat Diffusion model. http://ccl.northwestern.edu/netlogo/models/HeatDiffusion. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
 
-The NetLogo software:
+The NetLogo software.
 
 > Wilensky, U. (1999). NetLogo. http://ccl.northwestern.edu/netlogo/. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
 
