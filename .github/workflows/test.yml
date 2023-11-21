@@ -1,0 +1,51 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    if:
+      github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
+      github.repository
+
+    runs-on: ${{ matrix.os }}
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.9", "3.10", "3.11"]
+
+    steps:
+      - name: Install NetLogo
+        run: |
+          curl https://ccl.northwestern.edu/netlogo/6.1.1/NetLogo-6.1.1-64.tgz --output NetLogo-6.1.1-64.tgz
+          tar xf NetLogo-6.1.1-64.tgz
+          mv NetLogo\ 6.1.1 /opt/netlogo-6.1.1
+
+      - uses: actions/checkout@v4
+
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          miniforge-variant: Miniforge3
+          miniforge-version: latest
+          auto-update-conda: true
+          activate-environment: logo
+          environment-file: environment.yml
+
+      - name: Install package
+        run: |
+          pip install -e .
+
+      - name: Test
+        run: |
+          nox -s test --python ${{ matrix.python-version }}
+  
+      - name: Run examples
+        working-directory: ${{ github.workspace }}/examples
+        run: |
+          python run-bmi-model.py
