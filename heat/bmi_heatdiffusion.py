@@ -214,3 +214,7 @@ class BmiHeatDiffusion(Bmi):
 
     def update_until(self, time: float) -> None:
         raise NotImplementedError("update_until")
+
+    # A non-BMI helper function.
+    def get_attribute(self, name: str) -> float:
+        return self._model.report(name)
