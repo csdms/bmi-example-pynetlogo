@@ -1,4 +1,5 @@
 """Test BMI model information functions."""
+
 from heat import BmiHeatDiffusion
 
 

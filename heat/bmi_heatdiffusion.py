@@ -19,7 +19,6 @@ BmiGridUniformRectilinear = namedtuple(
 
 
 class BmiHeatDiffusion(Bmi):
-
     """Solve the heat equation on a 2D plate."""
 
     _name = "The 2D Heat Equation"
