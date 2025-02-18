@@ -48,6 +48,14 @@ def test_bmi(session: nox.Session) -> None:
     )
 
 
+@nox.session(name="run-examples", python=PYTHON_VERSIONS)
+def run_examples(session: nox.Session):
+    """Run Python script examples."""
+    session.install(".[examples]")
+    session.cd("examples")
+    session.run("python", "run-bmi-model.py")
+
+
 @nox.session
 def format(session: nox.Session) -> None:
     """Clean lint and assert style."""
