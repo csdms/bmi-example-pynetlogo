@@ -41,9 +41,9 @@ def test_bmi(session: nox.Session) -> None:
         "bmi-test",
         "heat:BmiHeatDiffusion",
         "--config-file",
-        "./examples/config.yaml",
+        f"{ROOT}/examples/config.yaml",
         "--root-dir",
-        "./examples",
+        "examples",
         "-vvv",
     )
 
