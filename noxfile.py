@@ -52,7 +52,7 @@ def test_bmi(session: nox.Session) -> None:
 def run_examples(session: nox.Session):
     """Run Python script examples."""
     session.install(".[examples]")
-    session.cd("examples")
+    session.cd(f"{ROOT}/examples")
     session.run("python", "run-bmi-model.py")
 
 
