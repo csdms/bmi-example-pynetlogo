@@ -91,7 +91,7 @@ def format(session: nox.Session) -> None:
 @nox.session
 def release(session):
     """Tag and build a new version."""
-    session.install(".[build]")
+    session.install(".[dev]")
     session.run("fullrelease")
 
 
