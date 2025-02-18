@@ -1,4 +1,5 @@
 """Helper functions for working with the HeatDiffusion model."""
+
 import matplotlib.pyplot as plt
 import numpy
 

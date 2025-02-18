@@ -1,4 +1,5 @@
 """Test BMI model variable information functions."""
+
 from heat import BmiHeatDiffusion
 
 CONFIG_FILE = "config.yaml"

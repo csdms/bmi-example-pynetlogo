@@ -10,7 +10,7 @@ PACKAGE = "heat"
 HERE = pathlib.Path(__file__)
 ROOT = HERE.parent
 PATHS = [PACKAGE, "examples", "tests", HERE.name]
-PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12"]
+PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13"]
 
 
 @nox.session(python=PYTHON_VERSIONS)
@@ -32,20 +32,45 @@ def test(session: nox.Session) -> None:
         session.run("coverage", "report", "--ignore-errors", "--show-missing")
 
 
-@nox.session(name="test-bmi", venv_backend="conda")
+@nox.session(name="test-bmi", python=PYTHON_VERSIONS)
 def test_bmi(session: nox.Session) -> None:
     """Test the Basic Model Interface."""
-    session.conda_install("bmi-tester")
+    session.install("bmi-tester")
     session.install(".")
     session.run(
         "bmi-test",
         "heat:BmiHeatDiffusion",
         "--config-file",
-        "./examples/config.yaml",
+        f"{ROOT}/examples/config.yaml",
         "--root-dir",
-        "./examples",
+        "examples",
         "-vvv",
     )
+
+
+@nox.session(name="run-examples", python=PYTHON_VERSIONS)
+def run_examples(session: nox.Session):
+    """Run Python script examples."""
+    session.install(".[examples]")
+    session.cd(f"{ROOT}/examples")
+    session.run("python", "run-bmi-model.py")
+
+
+@nox.session(name="check-notebooks", python=PYTHON_VERSIONS)
+def check_notebooks(session: nox.Session) -> None:
+    """Run the example notebooks."""
+    session.install(".[testing,examples]")
+    session.install("nbmake")
+
+    args = [
+        "--nbmake",
+        "--nbmake-kernel=python3",
+        "--nbmake-timeout=3000",
+        "-vvv",
+    ] + session.posargs
+
+    session.cd(f"{ROOT}/examples")
+    session.run("pytest", *args)
 
 
 @nox.session
@@ -60,7 +85,7 @@ def format(session: nox.Session) -> None:
 
     session.run("black", *black_args, *PATHS)
     session.run("isort", *PATHS)
-    session.run("ruff", "--fix", *PATHS)
+    session.run("ruff", "check", "--fix", *PATHS)
 
 
 @nox.session

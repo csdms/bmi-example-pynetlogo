@@ -35,8 +35,9 @@ This example can be built and installed on Linux, macOS, and Windows.
 
 **Prerequisites:**
 
+* Java Runtime Environment (JRE). NetLogo is build on Java, and it needs a JRE to run.
 * NetLogo. Instructions for downloading and installing NetLogo can be found [here](https://ccl.northwestern.edu/netlogo/download.shtml). NetLogo 6.1.1 was used to build, test, and run this example.
-* The Python BMI bindings. Follow the [build and install directions](https://github.com/csdms/bmi-python#install) given in that repository. You can choose to install them from source, or through `pip` or `conda`.
+* Python BMI mappings. Follow the [build and install directions](https://github.com/csdms/bmi-python#install) given in that repository. You can choose to install them from source, or through `pip` or `conda`.
 * PyNetLogo and Jpype. These are the key software packages that allow communication between NetLogo and Python.
 
 We recommend setting up a virtual environment--e.g., through `venv` or `conda`--to install the packages required for this example.
@@ -53,6 +54,18 @@ Install the example with `pip`.
 pip install -e .
 ```
 
+### Note on Java install location
+
+Jpype tries to guess where Java is installed.
+If Java is installed in a non-standard location,
+set the `JAVA_HOME` environment variable.
+As an example,
+I installed Java through Homebrew on my Mac,
+so I set `JAVA_HOME` to its install location:
+```bash
+export JAVA_HOME=/opt/homebrew/opt/openjdk
+```
+
 ## Use
 
 Try the example notebooks and scripts in the [examples](./examples/) directory. 
@@ -67,4 +80,4 @@ The NetLogo software.
 
 > Wilensky, U. (1999). NetLogo. http://ccl.northwestern.edu/netlogo/. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
 
-CSDMS is supported with funding from the National Science Foundation.
+CSDMS is supported with funding from the U.S. National Science Foundation.
