@@ -83,7 +83,7 @@ testpaths = ["heat", "tests"]
 norecursedirs = [".*", "*.egg*", "build", "dist"]
 addopts = """
   --tb native
-  --strict
+  --strict-markers
   --durations 16
   --doctest-modules
   -vvv
