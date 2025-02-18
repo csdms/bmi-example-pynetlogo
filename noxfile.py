@@ -32,10 +32,10 @@ def test(session: nox.Session) -> None:
         session.run("coverage", "report", "--ignore-errors", "--show-missing")
 
 
-@nox.session(name="test-bmi", venv_backend="conda")
+@nox.session(name="test-bmi", python=PYTHON_VERSIONS)
 def test_bmi(session: nox.Session) -> None:
     """Test the Basic Model Interface."""
-    session.conda_install("bmi-tester")
+    session.install("bmi-tester")
     session.install(".")
     session.run(
         "bmi-test",
