@@ -38,7 +38,7 @@ jobs:
         run: |
           nox -s test --python ${{ matrix.python-version }}
 
-      # Runs, passes all tests, but hangs at the end. A Java connection issue?
+      # Runs, passes all tests, but hangs at the end. This is https://github.com/csdms/bmi-example-pynetlogo/issues/1.
       # - name: Test BMI
       #   run: |
       #     nox -s test-bmi --python ${{ matrix.python-version }}
