@@ -10,7 +10,7 @@ PACKAGE = "heat"
 HERE = pathlib.Path(__file__)
 ROOT = HERE.parent
 PATHS = [PACKAGE, "examples", "tests", HERE.name]
-PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12"]
+PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13"]
 
 
 @nox.session(python=PYTHON_VERSIONS)
