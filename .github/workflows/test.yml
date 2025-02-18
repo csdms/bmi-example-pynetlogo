@@ -36,14 +36,10 @@ jobs:
           activate-environment: logo
           environment-file: environment.yml
 
-      - name: Install package
-        run: |
-          pip install -e .
-
       - name: Test
         run: |
           nox -s test --python ${{ matrix.python-version }}
-  
+
       - name: Run examples
         working-directory: ${{ github.workspace }}/examples
         run: |
