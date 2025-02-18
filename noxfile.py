@@ -56,6 +56,23 @@ def run_examples(session: nox.Session):
     session.run("python", "run-bmi-model.py")
 
 
+@nox.session(name="check-notebooks", python=PYTHON_VERSIONS)
+def check_notebooks(session: nox.Session) -> None:
+    """Run the example notebooks."""
+    session.install(".[testing,examples]")
+    session.install("nbmake")
+
+    args = [
+        "--nbmake",
+        "--nbmake-kernel=python3",
+        "--nbmake-timeout=3000",
+        "-vvv",
+    ] + session.posargs
+
+    session.cd(f"{ROOT}/examples")
+    session.run("pytest", *args)
+
+
 @nox.session
 def format(session: nox.Session) -> None:
     """Clean lint and assert style."""

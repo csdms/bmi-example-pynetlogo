@@ -54,3 +54,8 @@ jobs:
       - name: Run examples
         run: |
           nox -s run-examples --python ${{ matrix.python-version }}
+
+      - name: Check Jupyter notebooks
+        if: ${{ matrix.python-version == '3.12' }}
+        run: |
+          nox -s check-notebooks --python="${{ matrix.python-version }}"
